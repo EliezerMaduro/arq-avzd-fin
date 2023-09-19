@@ -1,0 +1,121 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  arq-avzd-fin-be
+Transform:
+- AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Timeout: 30
+    Tracing: Active
+  Api:
+    TracingEnabled: True
+
+Parameters:
+  Project:
+    Description: Project name
+    Type: String
+    Default: arq-avzd-fin-be
+  Stage:
+    Description: API Gateway stage
+    Type: String
+    Default: dev
+  SecretName:
+    Description: DB Secret
+    Type: String
+
+Resources:
+  CommonLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      CompatibleRuntimes:
+        - nodejs18.x
+      ContentUri: layers/common/
+      Description: Common layer for project
+      LicenseInfo: MIT
+      RetentionPolicy: Retain
+
+  FinBeApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Ref Stage
+      DefinitionBody:  !Transform
+        Name: AWS::Include
+        Parameters:
+          Location: ./openapi.yaml
+      OpenApiVersion: 3.0.1
+      Name: !Sub '${Project}-serverless-api'
+
+  createPaymentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub '${Project}-${Stage}-create-payment'
+      Handler: src/create-payment/index.handler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      MemorySize: 128
+      Description: PLEASE FILL ME!!!!!
+      Environment:
+        Variables:
+          SECRET_NAME: !Ref SecretName
+      Layers:
+        - !Ref CommonLayer
+      Events:
+        CreatePaymentPost:
+          Type: Api
+          Properties:
+            Path: /v1/payments
+            Method: POST
+            RestApiId: !Ref FinBeApi
+
+  createPurchaseFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub '${Project}-${Stage}-create-purchase'
+      Handler: src/create-purchase/index.handler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      MemorySize: 128
+      Description: PLEASE FILL ME!!!!!
+      Environment:
+        Variables:
+          SECRET_NAME: !Ref SecretName
+      Layers:
+        - !Ref CommonLayer
+      Events:
+        CreatePaymentPost:
+          Type: Api
+          Properties:
+            Path: /v1/purchases
+            Method: POST
+            RestApiId: !Ref FinBeApi
+
+  getFinancialStatementsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub '${Project}-${Stage}-get-financial-statement'
+      Handler: src/get-financial-statements/index.handler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      MemorySize: 128
+      Description: PLEASE FILL ME!!!!!
+      Environment:
+        Variables:
+          SECRET_NAME: !Ref SecretName
+      Layers:
+        - !Ref CommonLayer
+      Events:
+        CreatePaymentPost:
+          Type: Api
+          Properties:
+            Path: /v1/financial/statements
+            Method: GET
+            RestApiId: !Ref FinBeApi
+
+Outputs:
+  FinBeApiBaseUrl:
+    Description: URL of created API
+    Value: !Sub "https://${FinBeApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/"

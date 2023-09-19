@@ -1,0 +1,141 @@
+openapi: 3.0.1
+info:
+  title: "API de Pagos y Compras"
+  version: "1.0"
+
+paths:
+  /v1/payments:
+    post:
+      summary: Crear un pago
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        type: aws_proxy
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${Project}-{Stage}-create-payment/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+      responses:
+        '200':
+          description: Respuesta exitosa
+
+    options:
+      summary: Opciones para manejo de CORS
+      responses:
+        "200":
+          $ref: '#/components/responses/OptionResponse' 
+        x-amazon-apigateway-integration:
+          responses:
+            default:
+              statusCode: "200"
+              responseParameters:
+                method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST,GET'"
+                method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+                method.response.header.Access-Control-Allow-Origin: "'*'"
+          requestTemplates:
+            application/json: "{\"statusCode\": 200}"
+          passthroughBehavior: "when_no_match"
+          type: "mock"
+
+  /v1/purchases:
+    post:
+      summary: Crear una compra
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        type: aws_proxy
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${Project}-{Stage}-create-purchase/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+      responses:
+        '200':
+          description: Respuesta exitosa
+
+    options:
+      summary: Opciones para manejo de CORS
+      responses:
+        "200":
+          $ref: '#/components/responses/OptionResponse' 
+        x-amazon-apigateway-integration:
+          responses:
+            default:
+              statusCode: "200"
+              responseParameters:
+                method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST,GET'"
+                method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+                method.response.header.Access-Control-Allow-Origin: "'*'"
+          requestTemplates:
+            application/json: "{\"statusCode\": 200}"
+          passthroughBehavior: "when_no_match"
+          type: "mock"
+
+  /v1/financial/statements:
+    get:
+      summary: Obtener estados financieros
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        type: aws_proxy
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${Project}-{Stage}-get-financial-statements/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+      responses:
+        '200':
+          description: Respuesta exitosa
+
+    options:
+      summary: Opciones para manejo de CORS
+      responses:
+        "200":
+          $ref: '#/components/responses/OptionResponse' 
+        x-amazon-apigateway-integration:
+          responses:
+            default:
+              statusCode: "200"
+              responseParameters:
+                method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST,GET'"
+                method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+                method.response.header.Access-Control-Allow-Origin: "'*'"
+          requestTemplates:
+            application/json: "{\"statusCode\": 200}"
+          passthroughBehavior: "when_no_match"
+          type: "mock"
+
+
+components:
+  schemas:
+    empty:
+      title: "Empty schema"
+      type: "object"
+
+  responses:
+    OptionResponse:
+      description: "200 Response"
+      headers:
+        Access-Control-Allow-Origin:
+          schema:
+            type: "string"
+        Access-Control-Allow-Methods:
+          schema:
+            type: "string"
+        Access-Control-Allow-Headers:
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/empty"
