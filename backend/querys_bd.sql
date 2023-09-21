@@ -4,11 +4,7 @@ CREATE TABLE sales_invoice (
     invoice_number VARCHAR(255),
     issue_date DATE,
     customer_id INTEGER,
-    customer_name VARCHAR(50),
-    product_id INTEGER,
-    products_name TEXT,
     quantity INTEGER,
-    unit_price NUMERIC(12, 2),
     subtotal NUMERIC(12, 2),
     discounts NUMERIC(12, 2),
     taxes NUMERIC(12, 2),
@@ -17,14 +13,22 @@ CREATE TABLE sales_invoice (
     payment_status VARCHAR(50),
     currency VARCHAR(10),
     exchange_rate NUMERIC(10, 4),
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
-    FOREIGN KEY (product_id) REFERENCES products(product_id)
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);
+
+CREATE TABLE invoice_item (
+    invoice_item_id SERIAL PRIMARY KEY,
+    invoice_id SERIAL,
+    product_id INTEGER
+    FOREIGN KEY (invoice_id) REFERENCES sales_invoice(invoice_id),
+    FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
 
 -- Tabla de Ingresos
 CREATE TABLE income (
     income_id SERIAL PRIMARY KEY,
     income_date DATE,
+    invoice_id SERIAL,
     income_source VARCHAR(255), --invoice_number
     amount NUMERIC(12, 2),
     description TEXT,
@@ -32,7 +36,8 @@ CREATE TABLE income (
     income_status VARCHAR(50),
     currency VARCHAR(10),
     exchange_rate NUMERIC(10, 4),
-    income_category VARCHAR(100)
+    income_category VARCHAR(100),
+    FOREIGN KEY (invoice_id) REFERENCES sales_invoice(invoice_id)
 );
 
 -- Tabla de Comprobante de Egresos
@@ -60,10 +65,12 @@ CREATE TABLE costs (
 -- Tabla de Gastos
 CREATE TABLE expenses (
     expense_id SERIAL PRIMARY KEY,
+    center_id SERIAL, 
     expense_date DATE,
     expense_category VARCHAR(100),
     amount NUMERIC(12, 2),
-    description TEXT
+    description TEXT,
+    FOREIGN KEY (center_id) REFERENCES cost_centers(center_id)
 );
 
 
@@ -118,7 +125,7 @@ CREATE TABLE liabilities (
 );
 
 -- Tabla de Patrimonio
-CREATE TABLE Assets (
+CREATE TABLE patrimony (
     assets_id SERIAL PRIMARY KEY,
     assets_name VARCHAR(255),
     amount NUMERIC(12, 2),
@@ -138,5 +145,5 @@ CREATE TABLE customers (
 CREATE TABLE  products (
     product_id INTEGER PRIMARY KEY,
     product_name VARCHAR(50),
-    product_price  NUMERIC(12, 2),
+    product_price  NUMERIC(12, 2)
 );
