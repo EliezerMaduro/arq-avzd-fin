@@ -23,6 +23,7 @@ Parameters:
   SecretName:
     Description: DB Secret
     Type: String
+    Default: arq-avzd-fin-secret
 
 Resources:
   CommonLayer:
@@ -43,7 +44,6 @@ Resources:
         Name: AWS::Include
         Parameters:
           Location: ./openapi.yaml
-      OpenApiVersion: 3.0.1
       Name: !Sub '${Project}-serverless-api'
 
   createPaymentFunction:
@@ -85,7 +85,7 @@ Resources:
       Layers:
         - !Ref CommonLayer
       Events:
-        CreatePaymentPost:
+        CreatePurchasetPost:
           Type: Api
           Properties:
             Path: /v1/purchases
@@ -108,7 +108,7 @@ Resources:
       Layers:
         - !Ref CommonLayer
       Events:
-        CreatePaymentPost:
+        FinancialStatementsPost:
           Type: Api
           Properties:
             Path: /v1/financial/statements
