@@ -112,7 +112,7 @@ const Payment = () => {
     <MDBContainer fluid className='d-flex align-items-center justify-content-center bg-image' style={{height: "100%"}}>
       <MDBCard className='m-5' style={{maxWidth: '600px'}}>
         <MDBCardBody className='px-5'>
-          <h2 className="text-uppercase text-center mb-5">Pay your order</h2>
+          <h2 className="text-uppercase text-center mb-5">Pay your invoices</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
           {/* Dropdown 1 */}
           <select

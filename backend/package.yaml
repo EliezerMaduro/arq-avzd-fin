@@ -88,7 +88,7 @@ Resources:
             Method: POST
             RestApiId:
               Ref: FinBeApi
-      CodeUri: s3://s3bucketevergreen/50238b406daf8d29dd1ccc3810af38eb
+      CodeUri: s3://s3bucketevergreen/b77ff64df03800892d9e266942c81ad2
     Metadata:
       SamResourceId: createPaymentFunction
   createPurchaseFunction:
@@ -120,7 +120,7 @@ Resources:
             Method: POST
             RestApiId:
               Ref: FinBeApi
-      CodeUri: s3://s3bucketevergreen/50238b406daf8d29dd1ccc3810af38eb
+      CodeUri: s3://s3bucketevergreen/b77ff64df03800892d9e266942c81ad2
     Metadata:
       SamResourceId: createPurchaseFunction
   getFinancialStatementsFunction:
@@ -152,7 +152,7 @@ Resources:
             Method: GET
             RestApiId:
               Ref: FinBeApi
-      CodeUri: s3://s3bucketevergreen/50238b406daf8d29dd1ccc3810af38eb
+      CodeUri: s3://s3bucketevergreen/b77ff64df03800892d9e266942c81ad2
     Metadata:
       SamResourceId: getFinancialStatementsFunction
   getCostCentersFunction:
@@ -184,7 +184,7 @@ Resources:
             Method: GET
             RestApiId:
               Ref: FinBeApi
-      CodeUri: s3://s3bucketevergreen/50238b406daf8d29dd1ccc3810af38eb
+      CodeUri: s3://s3bucketevergreen/b77ff64df03800892d9e266942c81ad2
     Metadata:
       SamResourceId: getCostCentersFunction
   getCustomersFunction:
@@ -216,7 +216,7 @@ Resources:
             Method: GET
             RestApiId:
               Ref: FinBeApi
-      CodeUri: s3://s3bucketevergreen/50238b406daf8d29dd1ccc3810af38eb
+      CodeUri: s3://s3bucketevergreen/b77ff64df03800892d9e266942c81ad2
     Metadata:
       SamResourceId: getCustomersFunction
   getInvoiceDetailsFunction:
@@ -248,7 +248,7 @@ Resources:
             Method: GET
             RestApiId:
               Ref: FinBeApi
-      CodeUri: s3://s3bucketevergreen/50238b406daf8d29dd1ccc3810af38eb
+      CodeUri: s3://s3bucketevergreen/b77ff64df03800892d9e266942c81ad2
     Metadata:
       SamResourceId: getInvoiceDetailsFunction
   getInvoicesFunction:
@@ -280,7 +280,7 @@ Resources:
             Method: GET
             RestApiId:
               Ref: FinBeApi
-      CodeUri: s3://s3bucketevergreen/50238b406daf8d29dd1ccc3810af38eb
+      CodeUri: s3://s3bucketevergreen/b77ff64df03800892d9e266942c81ad2
     Metadata:
       SamResourceId: getInvoicesFunction
   getResponsiblesFunction:
@@ -312,7 +312,7 @@ Resources:
             Method: GET
             RestApiId:
               Ref: FinBeApi
-      CodeUri: s3://s3bucketevergreen/50238b406daf8d29dd1ccc3810af38eb
+      CodeUri: s3://s3bucketevergreen/b77ff64df03800892d9e266942c81ad2
     Metadata:
       SamResourceId: getResponsiblesFunction
   getResposibleDetailsFunction:
@@ -344,7 +344,7 @@ Resources:
             Method: GET
             RestApiId:
               Ref: FinBeApi
-      CodeUri: s3://s3bucketevergreen/50238b406daf8d29dd1ccc3810af38eb
+      CodeUri: s3://s3bucketevergreen/b77ff64df03800892d9e266942c81ad2
     Metadata:
       SamResourceId: getResposibleDetailsFunction
   getProductsFunction:
@@ -376,7 +376,7 @@ Resources:
             Method: GET
             RestApiId:
               Ref: FinBeApi
-      CodeUri: s3://s3bucketevergreen/50238b406daf8d29dd1ccc3810af38eb
+      CodeUri: s3://s3bucketevergreen/b77ff64df03800892d9e266942c81ad2
     Metadata:
       SamResourceId: getProductsFunction
   getProductDetailFunction:
@@ -408,7 +408,7 @@ Resources:
             Method: GET
             RestApiId:
               Ref: FinBeApi
-      CodeUri: s3://s3bucketevergreen/50238b406daf8d29dd1ccc3810af38eb
+      CodeUri: s3://s3bucketevergreen/b77ff64df03800892d9e266942c81ad2
     Metadata:
       SamResourceId: getProductDetailFunction
 Outputs:
