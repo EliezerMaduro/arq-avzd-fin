@@ -10,18 +10,17 @@ import {
 } from "react-bootstrap";
 import { useForm, useFieldArray, set } from "react-hook-form";
 
+const backendBaseUrl = "https://4dp9b64cd0.execute-api.us-east-1.amazonaws.com/dev/v1"
+
 function Purchase() {
-  /*const mockClients = [
-    {
-      id: "1",
-      name: "David",
-      lastname: "Tibaduiza",
-      email: "davidet9412@gmail.com",
-      phone: "3012740485",
-      address: "Carrera 66 # 38 - 27",
-    },
-  ];*/
-  const [customers, setCustomers] = useState([]);
+  const mockProducts = [
+    { id: "1", name: "Product 1", price: 500 },
+    { id: "2", name: "Product 2", price: 400 },
+    { id: "3", name: "Product 3", price: 100 }
+  ]
+  const [invoices, setInvoices] = useState([]);
+  const [products, setProducts] = useState([])
+  const [centers,setCenters] = useState([])
   const { control, resetField, register, setValue, getValues, handleSubmit } =
     useForm();
   const { fields, append, remove } = useFieldArray({
@@ -35,23 +34,25 @@ function Purchase() {
 
   const onHandleChange = (e) => {
     const name = e.target.value;
-    const customer = customers.find((customer) => customer.name === name);
-    setValue("customer_id",customer.customer_id);
+    const customer = customers.find((customer) => customer.responsible_name === name);
+    setValue("customer_id", customer.customer_id);
     setValue("lastname", customer.last_name);
     setValue("email", customer.email);
     setValue("phone_number", customer.phone_number);
     setValue("address", customer.address);
   };
 
-  const onAddProduct = (product) => {
-    append(product);
-    resetField("product.name");
-    resetField("product.quantity");
-    resetField("product.value");
+  const onHandleChangeProduct = (index, e) => {
+    const name = e.target.value;
+    const product = products.find((product) => product.name === name);
+    console.log(product)
+    setValue(`products.${index}.price`, product.price);
   };
 
-  useEffect(() => {
-    setCustomers(customers);
+  useEffect(async () => {
+    const resp = await (await fetch(`${backendBaseUrl}/responsibles`)).json()
+    setCustomers(resp.responsibles)
+    setProducts(mockProducts);
   }, []);
   return (
     <Container
@@ -76,7 +77,7 @@ function Purchase() {
                 >
                   <option value="default" disabled>Select a customer</option>
                   {customers.map((customer) => (
-                    <option key={customer.id}>{customer.name}</option>
+                    <option key={customer.id}>{customer.responsible_name}</option>
                   ))}
                 </Form.Select>
               </FloatingLabel>
@@ -127,7 +128,7 @@ function Purchase() {
               >
                 <Form.Control
                   className="mb-4"
-                  {...register("phone")}
+                  {...register("phone_number")}
                   type="number"
                   disabled
                 />
@@ -150,9 +151,55 @@ function Purchase() {
                 </Row>
                 {fields.map((field, index) => (
                   <Row className="mb-3" key={field.id}>
-                    <Col lg={4}>{field.name}</Col>
-                    <Col lg={3}>{field.quantity}</Col>
-                    <Col lg={3}>{field.value}</Col>
+                    <Col lg={4}>
+                      <Form.Group>
+                        <FloatingLabel controlId="floatingInput" label="Product Name">
+                          <Form.Select
+                            className="mb-4"
+                            {...register(`products.${index}.name`)}
+                            onChange={e => onHandleChangeProduct(index, e)}
+                            defaultValue={"default"}
+                          >
+                            <option value="default" disabled>Select a product</option>
+                            {products.map((product) => (
+                              <option key={product.id}>{product.name}</option>
+                            ))}
+                          </Form.Select>
+                        </FloatingLabel>
+                      </Form.Group>
+                    </Col>
+                    <Col lg={3}>
+                      <Form.Group>
+                        <FloatingLabel
+                          controlId="quantity"
+                          label="Qty"
+                          htmlFor="product-quantity"
+                          className="mb-3"
+                        >
+                          <Form.Control
+                            placeholder="1"
+                            {...register(`products.${index}.quantity`)}
+                            type="number"
+                          />
+                        </FloatingLabel>
+                      </Form.Group>
+                    </Col>
+                    <Col lg={3}>
+                      <Form.Group>
+                        <FloatingLabel
+                          controlId="product-value"
+                          label="Price"
+                          className="mb-3"
+                        >
+                          <Form.Control
+                            placeholder="0"
+                            {...register(`products.${index}.price`)}
+                            type="number"
+                            disabled
+                          />
+                        </FloatingLabel>
+                      </Form.Group>
+                    </Col>
                     <Col lg={1}>
                       <Button variant="danger" onClick={() => remove(index)}>
                         x
@@ -162,55 +209,7 @@ function Purchase() {
                 ))}
               </>
             )}
-            <Row className="mb-3">
-              <Col lg={4}>
-                <Form.Group>
-                  <FloatingLabel controlId="floatingInput" label="Product Name">
-                    <Form.Control
-                      placeholder="name"
-                      {...register("product.name")}
-                      type="text"
-                    />
-                  </FloatingLabel>
-                </Form.Group>
-              </Col>
-              <Col lg={3}>
-                <Form.Group>
-                  <FloatingLabel
-                    controlId="quantity"
-                    label="Qty"
-                    htmlFor="product-quantity"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      placeholder="1"
-                      {...register("product.quantity")} 
-                      type="number"
-                    />
-                  </FloatingLabel>
-                </Form.Group>
-              </Col>
-              <Col lg={3}>
-                <Form.Group>
-                  <FloatingLabel
-                    controlId="product-value"
-                    label="Price"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      placeholder="0"
-                      {...register("product.value")}
-                      type="number"
-                    />
-                  </FloatingLabel>
-                </Form.Group>
-              </Col>
-              <Col lg={1}>
-                <Button className="gradient-custom-4" onClick={() => onAddProduct(getValues("product"))}>
-                  +
-                </Button>
-              </Col>
-            </Row>
+            <Button className="mb-4 w-100 gradient-custom-4" onClick={() => append({ name: "", quantity: 0, price: "" })}>Add Product</Button>
             <Button
               className="mb-4 w-100 gradient-custom-4"
               size="lg"
