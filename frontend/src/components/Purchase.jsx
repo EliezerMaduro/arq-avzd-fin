@@ -18,7 +18,8 @@ function Purchase() {
     { id: "2", name: "Product 2", price: 400 },
     { id: "3", name: "Product 3", price: 100 }
   ]
-  const [invoices, setInvoices] = useState([]);
+  const [responsibles, setResponsaibles] = useState([]);
+  const [responsibleSelected, setResponsibleSelected] = useState(null);
   const [products, setProducts] = useState([])
   const [centers,setCenters] = useState([])
   const { control, resetField, register, setValue, getValues, handleSubmit } =
@@ -34,13 +35,14 @@ function Purchase() {
 
   const onHandleChange = (e) => {
     const name = e.target.value;
-    const customers = '';
-    const customer = customers.find((customer) => customer.responsible_name === name);
-    setValue("customer_id", customer.customer_id);
-    setValue("lastname", customer.last_name);
-    setValue("email", customer.email);
-    setValue("phone_number", customer.phone_number);
-    setValue("address", customer.address);
+    const responsible = responsibles.find((responsible) => responsible.responsible_name === name);
+    setValue("responsible_id", responsible.responsible_id);
+    fetch(`${backendBaseUrl}/responsibles/${responsible.responsible_id}`)
+    .then(response=>response.json())
+    .then(data=>{
+      console.log(data)
+      setResponsibleSelected(data)})
+
   };
 
   const onHandleChangeProduct = (index, e) => {
@@ -52,8 +54,7 @@ function Purchase() {
 
   useEffect(async () => {
     const resp = await (await fetch(`${backendBaseUrl}/responsibles`)).json()
-    //setCustomers(resp.responsibles)
-    setProducts(mockProducts);
+    setResponsaibles(resp.responsibles)
   }, []);
   return (
     <Container
@@ -76,24 +77,24 @@ function Purchase() {
                   onChange={onHandleChange}
                   defaultValue={"default"}
                 >
-                  <option value="default" disabled>Select a customer</option>
-                   {/* {
-                  customers.map((customer) => (
-                  <option key={customer.id}>{customer.responsible_name}</option>
+                  <option value="default" disabled>Select a responsible</option>
+                    {
+                  responsibles.map((responsible) => (
+                  <option key={responsible.responsible_id}>{responsible.responsible_name}</option>
                   ))
-                } */}
+                } 
                 </Form.Select>
               </FloatingLabel>
             </Form.Group>
             <Form.Group>
               <FloatingLabel
-                controlId="lastname"
-                label="Lastname"
+                controlId="contact_info"
+                label="Contact info"
                 className="mb-3"
               >
-                <Form.Control
+               <Form.Control
                   className="mb-4"
-                  {...register("lastname")}
+                  value={''}
                   type="text"
                   disabled
                 />
