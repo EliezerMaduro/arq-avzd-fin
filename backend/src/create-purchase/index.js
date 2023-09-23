@@ -9,10 +9,10 @@ exports.handler = async (event) => {
   console.log(dataJson);
 
   const transactionQuery = `INSERT INTO transactions (transaction_date,transaction_type, description, amount)
-  VALUES ('${dataJson.date}', 'COMPRA' ,${dataJson.description}, ${dataJson.amount});`
+  VALUES ('${dataJson.expense_date}', 'COMPRA' ,'${dataJson.description}', ${dataJson.amount});`
 
   const expensesQuery = `INSERT INTO expenses (center_id, expense_date, expense_category, responsible_id, amount, description)
-  VALUES ('${dataJson.center_id}', '${dataJson.expense_date}', '${dataJson.expense_category}', '${dataJson.responsible_id}', ${dataJson.amount}, '${dataJson.description}');`
+  VALUES (${dataJson.center_id}, '${dataJson.expense_date}', '${dataJson.expense_category}', ${dataJson.responsible_id}, ${dataJson.amount}, '${dataJson.description}');`
 
   try {
     const client = connectToDatabase();
