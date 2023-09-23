@@ -47,16 +47,16 @@ const FinancialStatement = () => {
 
   return (
     <MDBContainer fluid className='d-flex align-items-center justify-content-center bg-image' style={{height: "100%"}}>
-      <MDBCard className='m-5' style={{maxWidth: '600px'}}>
+      <MDBCard className='m-5' style={{maxWidth: '1500px'}}>
         <MDBCardBody className='px-5'>
           <h2 className="text-uppercase text-center mb-5">Financial Statement</h2>
 
-    <table>
+    <table >
       <thead>
         <tr>
-          <th>Asset</th>
-          <th>Value</th>
-          <th>Purchase date</th>
+          <th> Asset </th>
+          <th> Value </th>
+          <th> Purchase date </th>
         </tr>
       </thead>
       <tbody>
@@ -64,17 +64,15 @@ const FinancialStatement = () => {
           <tr key={asset.id}>
             <td>{asset.asset_name}</td>
             <td>{asset.value}</td>
-            <td>{asset.purchase_date}</td>
+            <td>{Date(asset.purchase_date)}</td>
           </tr>
         ))}
       </tbody>
-    </table>
-    <table>
       <thead>
         <tr>
-          <th>Liability Name</th>
-          <th>Amount</th>
-          <th>Description</th>
+          <th> Liability Name </th>
+          <th> Amount </th>
+          <th> Description </th>
         </tr>
       </thead>
       <tbody>
@@ -86,13 +84,11 @@ const FinancialStatement = () => {
           </tr>
         ))}
       </tbody>
-    </table>
-    <table>
       <thead>
         <tr>
-          <th>Description</th>
-          <th>Amount</th>
-          <th>Date</th>
+          <th> Description </th>
+          <th> Amount </th>
+          <th> Date </th>
         </tr>      
       </thead>
       <tbody>
@@ -100,7 +96,25 @@ const FinancialStatement = () => {
           <tr key={equity.id}>
             <td>{equity.description}</td>
             <td>{equity.amount}</td>
-            <td>{equity.date}</td>
+            <td>{Date(equity.date)}</td>
+          </tr>
+        ))}
+      </tbody>
+      <thead>
+        <tr>
+          <th> Account name </th>
+          <th> Account type </th>
+          <th> Date </th>
+          <th> Amount </th>
+        </tr>
+      </thead>
+      <tbody>
+        {accountingAccountsData.map((accountingAccounts) => (
+          <tr key={accountingAccounts.id}>
+            <td>{accountingAccounts.account_name}</td>
+            <td>{accountingAccounts.account_type}</td>
+            <td>{Date(accountingAccounts.date)}</td>
+            <td>{accountingAccounts.amount}</td>
           </tr>
         ))}
       </tbody>
