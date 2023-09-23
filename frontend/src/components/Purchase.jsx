@@ -34,7 +34,7 @@ function Purchase() {
 
   const onHandleChange = (e) => {
     const name = e.target.value;
-    const customers = "";
+    const customers = '';
     const customer = customers.find((customer) => customer.responsible_name === name);
     setValue("customer_id", customer.customer_id);
     setValue("lastname", customer.last_name);
@@ -77,9 +77,11 @@ function Purchase() {
                   defaultValue={"default"}
                 >
                   <option value="default" disabled>Select a customer</option>
-                  {/* {customers.map((customer) => (
-                    <option key={customer.id}>{customer.responsible_name}</option>
-                  ))} */}
+                   {/* {
+                  customers.map((customer) => (
+                  <option key={customer.id}>{customer.responsible_name}</option>
+                  ))
+                } */}
                 </Form.Select>
               </FloatingLabel>
             </Form.Group>
