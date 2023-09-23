@@ -7,7 +7,7 @@ const {
 exports.handler = async (event) => {
   const client = connectToDatabase();
   try {
-    const result = await client.query('SELECT invoice_id, invoice_number FROM sales_invoice');
+    const result = await client.query('SELECT invoice_id, invoice_number, customer_id, payment_status FROM sales_invoice');
     console.log(result.rows)
     closeDatabaseConnection(client);
     const body = {invoices: result.rows}

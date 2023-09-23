@@ -9,6 +9,19 @@ exports.handler = async (event) => {
   const client = connectToDatabase();
   try {
     const result = await client.query(`SELECT * FROM sales_invoice where invoice_id = ${id}`);
+    for (const element of result.rows) {
+      const invoiceItemsResult = await client.query(`SELECT * FROM invoice_item where invoice_id = ${element.invoice_id}`);
+      // Agrega un campo extra llamado "nuevo_campo" a cada objeto
+      element["invoice_items"] = [];
+
+      for (const item of invoiceItemsResult.rows) {
+        const productResult = await client.query(`SELECT * FROM products where product_id = ${item.product_id}`);
+        // Agrega un campo extra llamado "nuevo_campo" a cada objeto
+        item["product_price"] = productResult.rows[0].product_price;
+        item["product_name"] = productResult.rows[0].product_name;
+        element["invoice_items"].push(item);
+    }
+  }
     console.log(result.rows)
     closeDatabaseConnection(client);
     const body = result.rows[0]
